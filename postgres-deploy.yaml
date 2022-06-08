@@ -1,0 +1,28 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: postgres-deploy
+  labels:
+    name: postgres-deploy
+    app: demo-voting-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: postgres-pod
+      app: demo-voting-app
+    template:
+      metadata:
+        name: result-service
+        labels:
+          name: result-service
+          app: demo-voting-app
+      spec:
+        type: NodePort
+        ports:
+          - port: 80
+            targetPort: 80
+            nodePort: 30005
+        selector:
+          name: result-app-pod
+          app: demo-voting-app
